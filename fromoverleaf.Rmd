@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{Deep Learning Project 4}
+\author{Florian John and Willie Langenberg }
+\date{March 2023}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+In this project we are supposed to pick up a dataset from the internet and analyze it using appropriate deep learning techniques. The most recent advancements in deep learning have taken the world by storm. In particular, the large language model ChatGPT, almost seen to as an oracle of information, that can not only give answers to simple questions, but also generate creative and often very accurate responses to even the more demanding questions. The model used, GPT or Generative Pre-trained Transformer, uses a technique we have studied in class, the transformer architecture. With this project our goal is to dive a bit deeper into this architecture, in hopes of developing a broader understanding why it works and the difference compared to earlier techniques.
+\\ \\
+Having the transformer architecture in mind, we wanted to come up with a suitable problem and a fitting dataset. To keep the model somewhat similar to the famous chat bot, we also wanted to restrict ourselves to sequence to sequence classification, where the model input is a sequence of words (or characters) and the output is also a sequence of words. More specifically we thought it would be interesting to create a model that could summarize text. 
+
+\section*{Dataset}
+
+At first we wanted to use scientific papers as input to our model. However, we quickly realized that our computers restricted us to choose simpler datasets (i.e. smaller in size). We then chose a dataset containing reviews of fine foods from Amazon. The data span a period of 10 years, with a total of approximately 500,000 reviews. Reviews include product and user information, ratings, a plain text review and a summary of the review. Our intention is to use the reviews as input and the shorter review summary as output. An example drawn from the dataset is shown in figure x.x.
+
+\subsection*{Pre-Processing}
+
+This is a natural language processing problem in which we have to first manipulate the data. We do this to make the model 
+...
+
+\section*{Model}
+
+
+\end{document}
