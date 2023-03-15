@@ -119,4 +119,4 @@ Using a larger data size might be a possible fix for the model as the data size 
 Running the model with a more powerful computer with paralell processing might also be beneficial.
 
 Increasing Batch sizes seem to only accelerate learning rate and result quality [@Traintips].
-
+Dropout is supposed to be set to 0.1  [@attentioniayn]

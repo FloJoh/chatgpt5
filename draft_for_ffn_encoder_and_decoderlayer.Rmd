@@ -1,0 +1,98 @@
+---
+title: "draft_for_feedforward + endcoder"
+author: "florian and willie"
+date: "2023-03-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Feed forward network
+
+$$
+FFN(x) = \text{max}(0,xW_1 + b_1)W_2 + b_2 ~~~~(1)
+$$
+
+We define the fully connected feedforoward network as a class which will contain dense layers with a relu activation function and `dff` is the inner-layer dimensionality [@attentioniayn] `tf.keras.layers.Dense(dff, activation='relu')`
+
+```{python, eval = FALSE}
+class FeedForward(tf.keras.layers.Layer):
+  def __init__(self, d_model, dff, dropout_rate=0.1):
+    super().__init__()
+    self.seq = tf.keras.Sequential([
+      tf.keras.layers.Dense(dff, activation='relu'),
+      tf.keras.layers.Dense(d_model),
+      tf.keras.layers.Dropout(dropout_rate)
+    ])
+    self.add = tf.keras.layers.Add()
+    self.layer_norm = tf.keras.layers.LayerNormalization()
+
+  def call(self, x):
+    x = self.add([x, self.seq(x)])
+    x = self.layer_norm(x) 
+    return x
+```
+
+![fig 5. encoder layer highlighted from tensorflow.org](images/encoderlayer.PNG)
+
+Now that we have the necessary classes we define the encoder layer where we first apply GlobalSelfAttention then the FFN 
+
+```{python, eval = FALSE}
+class EncoderLayer(tf.keras.layers.Layer):
+  def __init__(self,*, d_model, num_heads, dff, dropout_rate=0.1):
+    super().__init__()
+
+    self.self_attention = GlobalSelfAttention(
+        num_heads=num_heads,
+        key_dim=d_model,
+        dropout=dropout_rate)
+
+    self.ffn = FeedForward(d_model, dff)
+
+  def call(self, x):
+    x = self.self_attention(x)
+    x = self.ffn(x)
+    return x
+```
+
+`dff` is defined like previously as the FFN inner-layer dimensions , `x` in input from the previous encoder layer and `d_model` is the dimensions of the input output dimensions of the FFN , `num_heads` is the max ammount of words each text-element applies attention to and `dropout_rate` which decides how much of the outputs should be dropped. This is to prevent overfitting [@JMLR].
+
+## decoder layer 
+
+Now we evaluate the decoder layer which consists of `CausalSelfAttention,CrossAttention` and `feedformward` classes
+
+```{python, eval = FALSE}
+class DecoderLayer(tf.keras.layers.Layer):
+  def __init__(self,
+               *,
+               d_model,
+               num_heads,
+               dff,
+               dropout_rate=0.1):
+    super(DecoderLayer, self).__init__()
+
+    self.causal_self_attention = CausalSelfAttention(
+        num_heads=num_heads,
+        key_dim=d_model,
+        dropout=dropout_rate)
+
+    self.cross_attention = CrossAttention(
+        num_heads=num_heads,
+        key_dim=d_model,
+        dropout=dropout_rate)
+
+    self.ffn = FeedForward(d_model, dff)
+
+  def call(self, x, context):
+    x = self.causal_self_attention(x=x)
+    x = self.cross_attention(x=x, context=context)
+
+    # Cache the last attention scores for plotting later
+    self.last_attn_scores = self.cross_attention.last_attn_scores
+
+    x = self.ffn(x)  # Shape `(batch_size, seq_len, d_model)`.
+    return x
+```
+
