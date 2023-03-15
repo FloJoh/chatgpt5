@@ -276,3 +276,27 @@ class Transformer(tf.keras.Model):
 Here the `self.final_layer = tf.keras.layers.Dense(target_vocab_size)` represents a final linear layer output with softmax.
 
 Now the model is ready for training.
+
+## result of training
+
+Training of the model was performed with reduced data-points from 100000 to 1000 and batch size was reduced from 500 to 50. Both changes were necessary due to hardware limitations.
+
+![fig 6. early-stopping curve of the transformer model](images/transformer_early_stopping.png)
+We see that the training of the model stopped early and thus failed.
+
+## the lstm model
+
+In an online article where they used the same data from amazon reviews, but instead the lstm model was used to summarize the text [@ComprehensiveGuide]. The model summary and the early stopping curve is shown as displayed on the website.
+
+![fig 7. Summary of the lstm model as shown in Comprehensive Guide to Text Summarization using Deep Learning in Python](images/lstm_summary.jpg)
+![fig 8. early stopping curve of the lstm model as shown in Comprehensive Guide to Text Summarization using Deep Learning in Python](images/lstm_early_stopping.jpg)
+
+Training the data locally using the code provided in the article was however, not possible without reducing the data-size from 100000 points in the article compared to 1000 data-points when training locally. still the run-time for two epochs estimated to about 30 minutes and this was the resulting early-stopping curve when patience is set to 1.
+
+![fig 9. locally trained early stopping curve of the lstm model](images/local_lstm_early_stopping.png)
+
+We see that the result is early stopping at the second epoch which can be attested to the limited data size.
+
+## comparison of lstm and transformer models
+
+In our model for the transformer we have the same issue of the model not learning after an early epoch which we may assume is the result of the same issue with data size. We may also assume that training was done in too short of a timespan for the models to make a comparison.
