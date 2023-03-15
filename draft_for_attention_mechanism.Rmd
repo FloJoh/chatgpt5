@@ -10,6 +10,10 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Transformer arcitecture 
+
+![fig 1. Transformer arcitecture from Attention Is All You Need](images/transformer_arcitecture.PNG)
+
 ## Concept of attention 
 
 The following is drawn from and article written by Stefania Cristina [@Whatisattention]. She argues that the human brain has limited memory.Therefore attention is used to determine what information is most important for the brain to store.
@@ -23,13 +27,13 @@ generated score values are normalized by passing them through a softmax function
 
 ## Attention mechanism
 
-Batch sizes determines learning rate and higher often means faster learning.
 
-First we add a class for base attention which will be used to comprise the following attention layers in the model. It consists of `tf.keras.layers.MultiHeadAttention(**kwargs)` which is a function that performs multiheaded attention.:
+
+First we add a class for base attention which will be used to comprise the following attention layers in the model. It consists of `tf.keras.layers.MultiHeadAttention(**kwargs)` which is a function that performs multiheaded attention.
 `tf.keras.layers.LayerNormalization()` which performs normalization and
 `self.add = tf.keras.layers.Add()` which adds a residual connection.
 
-```{python}
+```{python ,eval = FALSE}
 class BaseAttention(tf.keras.layers.Layer):
   def __init__(self, **kwargs):
     super().__init__()
@@ -41,10 +45,12 @@ class BaseAttention(tf.keras.layers.Layer):
 the kwargs argument includes the parameters `query`, `key` and `value`.
 Here as described in [@attentioniayn] we are "s mapping a query and a set of key-value pairs to an output" which means that the `query` which in our case is a matrix which represent searches, and combined with the `key` vectors we compare these to the attention scores and finally the process returns average across the `value` vectors weighted by attention [@tensorflow2015-whitepaper].
 
+![fig 2. Cross-Attention from Attention Is All You Need](images/crossattention.PNG)
+
 Now defining the cross attention layer which takes input from both the encoder and the decoder. The class uses the `self.mha` in order to perform multi-headed attention using `query,key,value` inputs. We also add residual connections from the previous layer of the decoder, and normalization. 
 
 
-```{python}
+```{python ,eval = FALSE}
 class CrossAttention(BaseAttention):
   def call(self, x, context):
     attn_output, attn_scores = self.mha(
@@ -64,9 +70,11 @@ class CrossAttention(BaseAttention):
 
 Note the parameters `x` which is an argument in `self.add` and assigned as `query` while the `context` variable is the input from the encoder. the `context` variable is output from the previous `epoch`.  
 
-We also use the base attention layer to defining a class for the global self attention layer which uses the base attention class previously defined. Here we call  `self.mha` in order to   
+![fig 3. global-attention from Attention Is All You Need](images/globalattention.PNG)
 
-```{python}
+We also use the base attention layer to defining a class for the global self attention layer which uses the base attention class previously defined. Here we call  `self.mha` in order to add multiheaded attention.   
+
+```{python ,eval = FALSE}
 class GlobalSelfAttention(BaseAttention):
   def call(self, x):
     attn_output = self.mha(
@@ -80,9 +88,11 @@ class GlobalSelfAttention(BaseAttention):
 
 The difference in this layer compared to the `CrossAttention` is the input of `query`, `value` and `key` which is all encoder input.
 
+![fig 4. causal-attention from Attention Is All You Need](images/causalattention.PNG)
+
 The last attention layer we define is the `causalselfattention` layer.
 
-```{python}
+```{python ,eval = FALSE}
 class CausalSelfAttention(BaseAttention):
   def call(self, x):
     attn_output = self.mha(
@@ -95,9 +105,18 @@ class CausalSelfAttention(BaseAttention):
     return x
 ```
 
-The difference in this layer compared to the `globalselfattention` layer  is the `use_causal_mask = True` is used to " to prevent positions from attending to subsequent positions" which  "ensures that the
-predictions for position i can depend only on the known outputs at positions less than i" [@attentioniayn].
+The difference in this layer compared to the `globalselfattention` layer  is the `use_causal_mask = True` is used to "*to prevent positions from attending to subsequent positions*" which "*ensures that the predictions for position i can depend only on the known outputs at positions less than i*" [@attentioniayn].
+
 
 [@TrainTransformerm]
 
+## Attention plots 
+
+## possible fixes
+
+Using a larger data size might be a possible fix for the model as the data size was less than optimal.
+
+Running the model with a more powerful computer with paralell processing might also be beneficial.
+
+Increasing Batch sizes seem to only accelerate learning rate and result quality [@Traintips].
 
