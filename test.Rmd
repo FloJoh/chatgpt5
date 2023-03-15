@@ -36,7 +36,15 @@ At first we wanted to use scientific papers as input to our model. However, we q
 
 ## Pre-Processing
 
-This is a natural language processing problem in which we have to first manipulate the data. We do this to make the model 
+This is a natural language processing problem, where it is common practice to first manipulate the text data, in order for our model to make any sense of the inputs. The main goal of pre-processing is to clean and transform the input data into a format that is fitting for a machine learning model. The first step was to remove special characters and symbols from the text. This involved removing punctuation, numbers, and other non-alphabetic characters that may not add any significant meaning to the texts. Next, we removed stop words. Stop words are essentially words that combine other words, such as "the", "a", "an", and "in" that do not add any significant meaning either. Also, we removed words with length less than three. The intuitive reasoning behind this, is according to us, mainly to reduce the dimensionality of the input data, and make the processing faster. After cleaning the text, we tokenized it. Tokenization is the process of splitting the text into individual words or subwords. This was done so that the machine learning model could process each word independently and understand the context of each word. Simply converting the lists of tokens (words or other groups of characters) into lists of numbers, where each number relates to a token.
+
+## Positional Encoding
+
+Positional encoding is a technique used in the Transformer architecture to incorporate the order of words in a sequence, into the model. In the "Attention is all you need" paper [@attentioniayn], the authors propose this technique. Since the Transformer model does not rely on a fixed position for words in the input sequence, it is important to provide the model with information about the relative (or absolute) positions of the words in the sequence.
+
+The technique involves adding a vector of fixed (or learned) values to each word in the sequence to indicate its position. The positional encoding vector is calculated based on the position of the word in the sequence and the dimension of the embedding vector. Specifically, the vector contains a series of sine and cosine functions with different frequencies, which allow it to encode different positional information for each word in the sequence. The authors of the paper hypothesizes the reasoning why this method works by "it would allow the model to easily learn to attend by relative positions".
+
+By adding positional encoding to the Transformer model, the model is able to differentiate between words based on their position in the sequence, which intuitively can improve its ability to understand the meaning of the inputs.
 
 # Model
 
