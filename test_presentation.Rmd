@@ -49,6 +49,13 @@ knitr::opts_chunk$set(echo = FALSE)
 
 <img src="images/transformer_summary.png" width="100%">
 
+## parameters
+- four encoder and decoder layers
+* FFN
+  - 128 input and output neuron dimensions
+  - 512 dimensions inbetween
+* dropout rate = 0.1
+
 ## Result of training
 
 <img src="images/transformer_early_stopping.png" width="70%">
