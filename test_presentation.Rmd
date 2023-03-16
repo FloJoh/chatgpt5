@@ -68,12 +68,18 @@ knitr::opts_chunk$set(echo = FALSE)
 <img src="images/local_lstm_early_stopping.png" width="50%">
 
 ## Comparison 
-* lstm
-  - 
+
+- both models had small training data
+
+- both models stopped training early
+
+- batch size was reduced to 50 in transformer
   
 ## Conclusion
 * Model & Results  
 
 * Discussion  
+
   - Pre-trained model 
-  -better hardware
+  
+  - better hardware
