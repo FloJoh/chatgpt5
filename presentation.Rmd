@@ -1,0 +1,132 @@
+---
+title: "Why yes, you can use data-processing to find a good PC!"
+author: "Florian John"
+date: "2023-01-12"
+output:
+  ioslides_presentation:
+    logo: SU_logo_CMYK.png
+    incremental: TRUE
+    css: slides.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## How ?
+```{r,echo=FALSE,warning=FALSE,message=FALSE,include=FALSE,results='hide'}
+library(httr)
+library(jsonlite)
+library(purrr)
+library(readxl)
+library(robotstxt)
+library(rvest)
+library(tidyverse)
+```
+
+```{r,cache=TRUE,echo=FALSE,include=FALSE,results='hide'}
+source_rmd <- function(file, local = FALSE, ...){
+  options(knitr.duplicate.label = 'allow')
+
+  tempR <- tempfile(tmpdir = ".", fileext = ".R")
+  on.exit(unlink(tempR))
+  knitr::purl(file, output=tempR, quiet = TRUE)
+
+  envir <- globalenv()
+  source(tempR, local = envir, ...)
+}
+
+source_rmd("~/PR_FloJoh/Report/report.Rmd")
+```
+
+By for example
+
+* Collecting data
+  + Finding csv files about performance of components
+  + downloading excel sheets about processor properties
+  + Scraping websites of prices and reviews for computers
+  
+* Analyzing
+  + Visualizing what's popular
+  + Calculating weighted average review score
+  + Comparing pricing vs performance
+  
+## Collecting data
+
+* Standardize data
+
+  Turn "Intel(R) Core(TM) i5-9600K CPU @ 3.70GHz" 
+  
+  into "i5-9600K" using `str_extract`:
+
+* scrape and find paths using `html_child` 
+
+  `html_elements() %>% html_children` shows children in the html that you can use to find the wanted element
+
+## Analyzing 
+
+- Join price data and benchmark data
+
+  Using `left_join` find what benchmark score the computers being sold have.
+
+- Group on brand and calculate `weighted.mean` of benchmark data
+
+  We can find what brand has the highest average scores
+
+- Calculate price/performance ratio
+
+  Price/benchmark_score is how much value you get for your money.
+  
+## Proof it works
+
+```{r,echo=FALSE,warning=FALSE,error=FALSE,message=FALSE}
+cpu_flops_data %>% 
+  left_join(cpu_data,
+            by = "processor") %>% 
+  mutate(gflops_per_processor = gflops_per_core*number_of_cores) %>%
+  filter(!is.na(base_frequency_ghz)) %>% 
+  group_by(cpu_brand) %>% 
+  summarise(cpu_brand,
+            avg_gflops_per_processor = weighted.mean(gflops_per_processor,w = n_of_computers,na.rm = T)) %>% 
+  unique() %>% 
+  ggplot(aes(x = cpu_brand,y = avg_gflops_per_processor)) +
+  geom_col() +
+  labs(
+  y = "average GIGAFLOPS",
+  title = "Average GIGAFLOPS per processor-brand"
+  )
+```
+
+## Brands for laptops
+
+```{r}
+prisjakt_laptop_table %>% 
+  left_join(cpu_benchmark_data[,-3],
+            by = "processor") %>% 
+  group_by("computer_brand") %>% 
+  mutate(
+    tot_benchmark_score = sum(cpu_benchmark,na.rm = T),
+    price_benchmark_ratio = price/tot_benchmark_score
+  ) %>% 
+  ggplot(aes(x = computer_brand,y = price_benchmark_ratio)) +
+  geom_col()
+```
+
+## Brands for desktops
+
+```{r}
+desktop_spec_table %>% 
+  left_join(cpu_benchmark_data[,-3],
+            by = "processor") %>% 
+  left_join(gpu_benchmark_data[,-3],
+            by = c("graphics_card" = "gpu_name")) %>% 
+  group_by("computer_brand") %>% 
+  mutate(
+    tot_benchmark_score = sum(cpu_benchmark + gpu_benchmark,na.rm = T),
+    price_benchmark_ratio = displayed_price_kr/tot_benchmark_score
+  ) %>% 
+  ggplot(aes(x = computer_brand,y = price_benchmark_ratio)) +
+  geom_col()
+```
+
+## Thank you
