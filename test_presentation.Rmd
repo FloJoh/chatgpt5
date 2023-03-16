@@ -33,9 +33,6 @@ Tokenization
 
 <img src="images/preprocessing_example.png" width="100%">
 
-## analysing data
-
-
 
 ## Attention
 * Attention in the brain
@@ -56,12 +53,15 @@ Tokenization
 
 <img src="images/transformer_early_stopping.png" width="70%">
 
-## the lstm model
+## the lstm model trained with 100000 data points
 
 <img src="images/lstm_early_stopping.jpg" width="50%">
--model trained with 100000 datapoints
 
+## the lstm model trained with 1000 data points 
 <img src="images/local_lstm_early_stopping.png" width="50%">
 
 ## comparison 
+* lstm
+  - 
+  
 ## conclusion
