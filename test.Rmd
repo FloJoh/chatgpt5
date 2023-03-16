@@ -32,11 +32,13 @@ Having the transformer architecture in mind, we wanted to come up with a suitabl
 
 # Dataset
 
-At first we wanted to use scientific papers as input to our model. However, we quickly realized that our computers restricted us to choose simpler datasets (i.e. smaller in size). We then chose a dataset containing reviews of fine foods from Amazon. The data span a period of 10 years, with a total of approximately 500,000 reviews. Reviews include product and user information, ratings, a plain text review and a summary of the review. Our intention is to use the reviews as input and the shorter review summary as output. An example drawn from the dataset is shown in figure x.x.
+At first we wanted to use scientific papers as input to our model. However, we quickly realized that our computers restricted us to choose simpler datasets (i.e. smaller in size). We then chose a dataset containing reviews of fine foods from Amazon. The data span a period of 10 years, with a total of approximately 500,000 reviews. Reviews include product and user information, ratings, a plain text review and a summary of the review. Our intention is to use the reviews as input and the shorter review summary as output. An example drawn from the dataset is shown in Figure.1.
 
 ## Pre-Processing
 
 This is a natural language processing problem, where it is common practice to first manipulate the text data, in order for our model to make any sense of the inputs. The main goal of pre-processing is to clean and transform the input data into a format that is fitting for a machine learning model. The first step was to remove special characters and symbols from the text. This involved removing punctuation, numbers, and other non-alphabetic characters that may not add any significant meaning to the texts. Next, we removed stop words. Stop words are essentially words that combine other words, such as "the", "a", "an", and "in" that do not add any significant meaning either. Also, we removed words with length less than three. The intuitive reasoning behind this, is according to us, mainly to reduce the dimensionality of the input data, and make the processing faster. After cleaning the text, we tokenized it. Tokenization is the process of splitting the text into individual words or subwords. This was done so that the machine learning model could process each word independently and understand the context of each word. Simply converting the lists of tokens (words or other groups of characters) into lists of numbers, where each number relates to a token.
+
+![Example text being processed first by cleaning the text then tokenizing it](images/preprocessing_example.png )
 
 ## Positional Encoding
 
