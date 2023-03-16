@@ -38,8 +38,30 @@ Tokenization
 
 
 ## Attention
+* Attention in the brain
+  - used when generating memories
+* Attention in code
+  - using attention as weights
+  - weights used to link text with output
+
 ## The transformer model
+
+<img src="images/transformer_arcitecture.png" width="40%">
+
+## Transformer summary
+
+<img src="images/transformer_summary.png" width="100%">
+
 ## result of training
+
+<img src="images/transformer_early_stopping.png" width="70%">
+
 ## the lstm model
+
+<img src="images/lstm_early_stopping.jpg" width="50%">
+-model trained with 100000 datapoints
+
+<img src="images/local_lstm_early_stopping.png" width="50%">
+
 ## comparison 
 ## conclusion
