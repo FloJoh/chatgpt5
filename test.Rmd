@@ -141,6 +141,8 @@ class CausalSelfAttention(BaseAttention):
 
 The difference in this layer compared to the `globalselfattention` layer  is the `use_causal_mask = True` is used to "*to prevent positions from attending to subsequent positions*" which "*ensures that the predictions for position i can depend only on the known outputs at positions less than i*" [@attentioniayn].
 
+Residual connections, also known as skip connections, provide numerous benefits in deep neural networks. One such advantage is mitigating the vanishing gradient problem, where gradients tend to approach zero. By introducing residual connections, the gradients are allowed to flow seamlessly through the network without being held back by any areas that may have encountered learning stagnation. In addition to mitigating the vanishing gradient problem, residual connections offer another significant advantage that we have discussed in class. Incorporating residual connections from the input layer enables the network to more easily contain the identity function as one of its elements. The idea, in turn, helps prevent the model from deviating from the ground truth. As noted in the d2l book [@d2l], "Only if larger function classes contain the smaller ones are we guaranteed that increasing them strictly increases the expressive power of the network." 
+
 ## Feed forward network
 
 $$
