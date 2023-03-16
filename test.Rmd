@@ -329,3 +329,7 @@ In our model for the transformer we have the same issue of the model not learnin
 
 # Conclusion
 While we were unable to train our model to a point where it actually produced useful predictions, we learnt a lot along the way. Not only did we get a sounder understanding of the transfomer architecture, but we also learnt how to implement it in code. However, if we were to recreate the project we would probably look into using a pre-trained model. This is a popular method in which you copy the weights learnt in one model on a specific task, then fine-tune it by training it on your specific dataset for a few training epochs. In an article published 2019 [@PreTrainedTransformer], the authors used a pre-trained model (BERT), modified it to text summarization, and then fine-tuned it on their dataset. Even though transformers are easier to train, due to the ability to train some parts in parallel, they are still too heavy for a student's laptop. 
+
+
+
+# References
