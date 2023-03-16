@@ -75,4 +75,5 @@ knitr::opts_chunk$set(echo = FALSE)
 * Model & Results  
 
 * Discussion  
-  - Pre-trained model  
+  - Pre-trained model 
+  -better hardware
