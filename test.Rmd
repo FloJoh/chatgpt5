@@ -77,7 +77,7 @@ class BaseAttention(tf.keras.layers.Layer):
 ```
 
 the kwargs argument includes the parameters `query`, `key` and `value`.
-Here as described in [@attentioniayn] we are "s mapping a query and a set of key-value pairs to an output" which means that the `query` which in our case is a matrix which represent searches, and combined with the `key` vectors we compare these to the attention scores and finally the process returns average across the `value` vectors weighted by attention [@tensorflow2015-whitepaper].
+Here as described in [@attentioniayn] we are "s mapping a query and a set of key-value pairs to an output" which means that the `query` which in our case is a matrix which represent searches, and combined with the `key` vectors we compare these to the attention scores and finally the process returns average across the `value` vectors weighted by attention [@tensorflow2015-whitepaper]. Residual connections, also known as skip connections, provide numerous benefits in deep neural networks. One such advantage is mitigating the vanishing gradient problem, where gradients tend to approach zero. By introducing residual connections, the gradients are allowed to flow seamlessly through the network without being held back by any areas that may have encountered learning stagnation. In addition to mitigating the vanishing gradient problem, residual connections offer another significant advantage that we have discussed in class. Incorporating residual connections from the input layer enables the network to more easily contain the identity function as one of its elements. The idea, in turn, helps prevent the model from deviating from the ground truth. As noted in the d2l book [@d2l], "Only if larger function classes contain the smaller ones are we guaranteed that increasing them strictly increases the expressive power of the network." 
 
 ![fig 2. Cross-Attention from Attention Is All You Need](images/crossattention.PNG)
 
@@ -141,7 +141,6 @@ class CausalSelfAttention(BaseAttention):
 
 The difference in this layer compared to the `globalselfattention` layer  is the `use_causal_mask = True` is used to "*to prevent positions from attending to subsequent positions*" which "*ensures that the predictions for position i can depend only on the known outputs at positions less than i*" [@attentioniayn].
 
-Residual connections, also known as skip connections, provide numerous benefits in deep neural networks. One such advantage is mitigating the vanishing gradient problem, where gradients tend to approach zero. By introducing residual connections, the gradients are allowed to flow seamlessly through the network without being held back by any areas that may have encountered learning stagnation. In addition to mitigating the vanishing gradient problem, residual connections offer another significant advantage that we have discussed in class. Incorporating residual connections from the input layer enables the network to more easily contain the identity function as one of its elements. The idea, in turn, helps prevent the model from deviating from the ground truth. As noted in the d2l book [@d2l], "Only if larger function classes contain the smaller ones are we guaranteed that increasing them strictly increases the expressive power of the network." 
 
 ## Feed forward network
 
@@ -231,7 +230,7 @@ class DecoderLayer(tf.keras.layers.Layer):
 ```
 
 
-## finnished transformer
+## finished transformer
 
 Now to the final step where we add the finished transformer layer which incorporates all the previous classes 
 
