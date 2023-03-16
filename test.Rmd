@@ -273,9 +273,33 @@ class Transformer(tf.keras.Model):
     return logits
 ```
  
-Here the `self.final_layer = tf.keras.layers.Dense(target_vocab_size)` represents a final linear layer output with softmax.
+Here the `num_layers` will specify the ammount of layers in both the encoder and decoder layers. The `self.final_layer = tf.keras.layers.Dense(target_vocab_size)` represents a final linear layer output with softmax.
 
-Now the model is ready for training.
+We initiate with the following parameters and add them to the `transformer model`
+
+```{python, eval = FALSE}
+num_layers = 4
+d_model = 128
+dff = 512
+num_heads = 8
+dropout_rate = 0.1
+
+transformer = Transformer(
+    num_layers=num_layers,
+    d_model=d_model,
+    num_heads=num_heads,
+    dff=dff,
+    input_vocab_size=x_voc_size,
+    target_vocab_size=y_voc_size,
+    dropout_rate=dropout_rate)
+
+transformer.summary()
+```
+
+
+And the resulting summary print for our model is the following:
+
+![summary print for defined transformer model](images/transformer_summary.png)
 
 ## result of training
 
@@ -298,11 +322,9 @@ Training the data locally using the code provided in the article was however, no
 We see that the result is early stopping at the second epoch which can be attested to the limited data size.
 
 ## comparison of lstm and transformer models
-
 In our model for the transformer we have the same issue of the model not learning after an early epoch which we may assume is the result of the same issue with data size. We may also assume that training was done in too short of a timespan for the models to make a comparison.
 
 
 
 #Discussion
-
 While we were unable to train our model to a point where it actually produced useful predictions, we learnt a lot along the way. Not only did we get a sounder understanding of the transfomer architecture, but we also learnt how to implement it in code. However, if we were to recreate the project we would probably look into using a pre-trained model. This is a popular method in which you copy the weights learnt in one model on a specific task, then fine-tune it by training it on your specific dataset for a few training epochs. In an article published 2019 [@PreTrainedTransformer], the authors used a pre-trained model (BERT), modified it to text summarization, and then fine-tuned it on their dataset. Even though transformers are easier to train, due to the ability to train some parts in parallel, they are still too heavy for a student's laptop. 
